@@ -1,0 +1,78 @@
+{% extends 'school_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container">
+    <h1 class="text-center mb-4">Edit Teacher Details</h1>
+    
+    <form method="post" class="registration-form">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="id_name" class="form-label">Name:</label>
+                    {{ form.name }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_phone" class="form-label">Phone:</label>
+                    {{ form.phone }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email:</label>
+                    {{ form.email }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_num_schools" class="form-label">Num Schools:</label>
+                    {{ form.num_schools }}
+                </div>
+                
+                <div class="mb-2">
+                    <label for="id_role" class="form-label">Role:</label>
+                    {{ form.role }}
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="id_state" class="form-label">State:</label>
+                    {{ form.state }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_district" class="form-label">District:</label>
+                    {{ form.district }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_block" class="form-label">Block:</label>
+                    {{ form.block }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_school" class="form-label">School:</label>
+                    {{ form.school }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_school_code" class="form-label">School Code:</label>
+                    {{ form.school_code }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'teacher_list' %}" class="btn btn-secondary px-5">Cancel</a>
+            <button type="submit" class="btn btn-primary px-5">Save Changes</button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/cascading.js' %}"></script>
+{% endblock %}

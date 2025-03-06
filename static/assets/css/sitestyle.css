@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+  --nav-color: white;
+  --nav-hover-color: #2691d9;
+  --nav-dropdown-background-color: rgba(0, 0, 0, 0.9);
+  --nav-dropdown-color: white;
+  --nav-dropdown-hover-color: #42b74a;
+  --nav-font: "Poppins", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--nav-font);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(120deg, #42b74a, #bb89d1);
+  height: 100vh;
+  overflow: auto;
+  color: white;
+}
+
+/* ✅ Centered login form */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
+}
+
+.center h1 {
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid silver;
+}
+
+.center form {
+  padding: 0 40px;
+}
+
+form .txt_field {
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+}
+
+.txt_field input {
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.txt_field label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #adadad;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.txt_field span::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--nav-hover-color);
+  transition: .5s;
+}
+
+.txt_field input:focus ~ label,
+.txt_field input:valid ~ label {
+  top: -5px;
+  color: var(--nav-hover-color);
+}
+
+.txt_field input:focus ~ span::before,
+.txt_field input:valid ~ span::before {
+  width: 100%;
+}
+
+.pass {
+  margin: -5px 0 20px 5px;
+  color: #a6a6a6;
+  cursor: pointer;
+}
+
+.pass:hover {
+  text-decoration: underline;
+}
+
+input[type="submit"] {
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: var(--nav-hover-color);
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  transition: 0.5s;
+}
+
+input[type="submit"]:hover {
+  background: white;
+  color: var(--nav-hover-color);
+  border-color: var(--nav-hover-color);
+}
+
+/* ✅ Navigation Menu */
+.navmenu {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.navmenu a,
+.navmenu a:focus {
+  color: var(--nav-color);
+  font-size: 15px;
+  padding: 5px 10px;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: 0.3s ease-in-out;
+  position: relative;
+}
+
+.navmenu a i,
+.navmenu a:focus i {
+  font-size: 12px;
+  line-height: 0;
+  margin-left: 5px;
+  transition: 0.3s;
+}
+
+.navmenu > ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+
+.navmenu > ul > li {
+  position: relative;
+  list-style: none;
+}
+
+.navmenu > ul > li > a:before {
+  content: "";
+  position: absolute;
+  height: 2px;
+  bottom: -6px;
+  left: 0;
+  background-color: var(--nav-hover-color);
+  visibility: hidden;
+  width: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.navmenu a:hover:before,
+.navmenu li:hover > a:before,
+.navmenu .active:before {
+  visibility: visible;
+  width: 25px;
+}
+
+.navmenu li:hover > a,
+.navmenu .active,
+.navmenu .active:focus {
+  color: var(--nav-hover-color);
+}
+
+/* ✅ Dropdown menu */
+.navmenu .dropdown ul {
+  margin: 0;
+  padding: 10px 0;
+  background: var(--nav-dropdown-background-color);
+  display: block;
+  position: absolute;
+  visibility: hidden;
+  left: 14px;
+  top: 100%;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+  border-radius: 4px;
+  z-index: 99;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+}
+
+.navmenu .dropdown ul li {
+  min-width: 200px;
+  list-style: none;
+}
+
+.navmenu .dropdown ul a {
+  padding: 10px 20px;
+  font-size: 15px;
+  text-transform: none;
+  color: var(--nav-dropdown-color);
+}
+
+.navmenu .dropdown ul a:hover,
+.navmenu .dropdown ul .active:hover,
+.navmenu .dropdown ul li:hover > a {
+  color: var(--nav-dropdown-hover-color);
+}
+
+.navmenu .dropdown:hover > ul {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ✅ Sub-dropdown (Nested) */
+.navmenu .dropdown .dropdown ul {
+  top: 0;
+  left: -90%;
+  visibility: hidden;
+}
+
+.navmenu .dropdown .dropdown:hover > ul {
+  opacity: 1;
+  left: -100%;
+  visibility: visible;
+}
+
+/* ✅ Logout Button */
+.ms-auto {
+  margin-left: auto !important;
+}
+
+.logout-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-container a {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.logout-container a:hover {
+  color: var(--nav-hover-color);
+}
+
+/* ✅ Responsive fixes */
+@media screen and (max-width: 768px) {
+  .navmenu {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .navmenu .dropdown ul {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+
+input[type="submit"]{
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: #2691d9;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+input[type="submit"]:hover{
+  border-color: #2691d9;
+  transition: .5s;
+}
+.signup_link{
+  margin: 30px 0;
+  text-align: center;
+  font-size: 16px;
+  color: #666666;
+}
+.signup_link a{
+  color: #2691d9;
+  text-decoration: none;
+}
+.signup_link a:hover{
+  text-decoration: underline;
+}

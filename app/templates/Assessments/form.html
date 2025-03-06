@@ -1,0 +1,31 @@
+{% extends 'Site/base.html' %}
+{% load static %}
+{% block content %}
+<body>
+    <div class="form-container">
+        <h1>Form for Standard {{ student.standard }} - {{ subject }}</h1>
+
+        {% if form_submitted %}
+            <p>You have already submitted the {{ subject }} form. Thank you!</p>
+            <button class="btn-green" disabled>Submitted</button>
+        {% else %}
+            <form method="post" action="{% url 'submit_form' student.id subject %}">
+                {% csrf_token %}
+                {% for question in questions %}
+                    <div class="question-container">
+                        <p>{{ question.question }}</p>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.0 }}" required> {{ question.options.0 }}</label><br>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.1 }}"> {{ question.options.1 }}</label><br>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.2 }}"> {{ question.options.2 }}</label><br>
+                        <label><input type="radio" name="question_{{ question.question }}" value="{{ question.options.3 }}"> {{ question.options.3 }}</label><br>
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary px-3">Submit</button>
+                <a class="btn btn-secondary" href="{% url 'assesment_student_list' %}">Back</a>
+            </form>
+        {% endif %}
+        
+    </div>
+</body>
+</html>
+{% endblock %}

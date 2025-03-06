@@ -1,0 +1,93 @@
+{% extends 'school_app/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Submitted Teacher Registration Forms</h2>
+    
+    <!-- CSRF Token (hidden) -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Num Schools</th>
+                <th>School Name</th>
+                <th>District Name</th>
+                <th>Block Name</th>
+                <th>State Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr>
+                <td contenteditable="true" class="editable">{{ teacher.name }}</td>
+                <td contenteditable="true" class="editable">{{ teacher.email }}</td>
+                <td contenteditable="true" class="editable">{{ teacher.num_schools }}</td>
+                <td>
+                    {% for school in teacher.schools.all %}
+                        {{ school.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for school in teacher.schools.all %}
+                        {{ school.block.district.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for school in teacher.schools.all %}
+                        {{ school.block.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for school in teacher.schools.all %}
+                        {{ school.block.district.state.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'edit_teacher' teacher.id %}" class="btn btn-success">Edit</a>
+                    <button class="btn btn-danger delete-btn" data-teacher-id="{{ teacher.id }}">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">No records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'index' %}" class="btn btn-secondary px-5">Back</a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.body.addEventListener('click', function (event) {
+            if (event.target.classList.contains('delete-btn')) {
+                let teacherId = event.target.getAttribute('data-teacher-id');
+                if (confirm("Are you sure you want to delete this record?")) {
+                    fetch(`/delete-teacher/${teacherId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCSRFToken(),
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        location.reload();
+                    })
+                    .catch(error => alert("Error: " + error));
+                }
+            }
+        });
+    });
+
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+</script>
+
+{% endblock %}

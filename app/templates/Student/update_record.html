@@ -1,0 +1,75 @@
+{% extends 'Site/base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="text-center">Add Record</h1>
+        <br/>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="row">
+                <!-- First Column -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.student_id.label_tag }} {{ form.student_id }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.first_name.label_tag }} {{ form.first_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.last_name.label_tag }} {{ form.last_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.funder.label_tag }} {{ form.funder }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.school_name.label_tag }} {{ form.school_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.email.label_tag }} {{ form.email }}
+                    </div>
+                </div>
+
+                <!-- Second Column -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.gender.label_tag }} {{ form.gender }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.standard.label_tag }} {{ form.standard }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.section.label_tag }} {{ form.section }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.phone.label_tag }} {{ form.phone }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.block.label_tag }} {{ form.block }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.city.label_tag }} {{ form.city }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.state.label_tag }} {{ form.state }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.zipcode.label_tag }} {{ form.zipcode }}
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4">Update Record</button>
+                <a href="{% url 'index' %}" class="btn btn-secondary px-4">Back</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

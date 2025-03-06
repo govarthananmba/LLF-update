@@ -1,0 +1,14 @@
+{% extends 'school_app/base.html' %}
+
+{% block content %}
+<div class="success-container">
+    <div class="card">
+        <div class="card-body text-center">
+            <h1 class="text-success">Registration Successful!</h1>
+            <p class="lead">Thank you for registering as a teacher.</p>
+            <a href="{% url 'teacher_registration' %}" class="btn btn-primary mt-3">Register Another Teacher</a>
+            <a href="{% url 'index' %}" class="btn btn-secondary mt-3">Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
