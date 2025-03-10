@@ -11,7 +11,34 @@
 
     {% if students %}
         <h1>Students from {{ request.user.school_teacher.school_name }}</h1>
-        <br>
+        <form method="GET">
+            <label for="grade">Filter by Grade:</label>
+            <select name="grade" id="grade" onchange="this.form.submit()">
+                <option value="">Grades</option>
+                {% for grade in grades %}
+                <option value="{{ grade }}" {% if grade == selected_grade %}selected{% endif %}>Grade {{ grade }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <br> 
+        <table class="table table-bordered">
+            <tr>
+                <th>Total Students</th>
+                <th>Literacy Submitted</th>
+                <th>Literacy Not Submitted</th>
+                <th>Numeracy Submitted</th>
+                <th>Numeracy Not Submitted</th>
+            </tr>
+            <tr>
+                <td>{{ total_students }}</td>
+                <td>{{ literacy_submitted }}</td>
+                <td>{{ literacy_not_submitted }}</td>
+                <td>{{ numeracy_submitted }}</td>
+                <td>{{ numeracy_not_submitted }}</td>
+            </tr>
+        </table>
+
+   
         <div class="d-flex flex-row-reverse bd-highlight gap-2">
             <a href="{% url 'add_record' %}" class="btn btn-primary p-2 bd-highlight">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-plus-lg me-1" viewBox="0 0 16 16">

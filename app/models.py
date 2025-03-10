@@ -85,11 +85,12 @@ class Record(models.Model):
 
 class School_teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    school_name = models.CharField(max_length=100)
- 
+    school_name = models.CharField(max_length=100, default="Unknown School")  # Set a default value
 
     def __str__(self):
         return f"{self.user.username} - {self.school_name}"
+
+
     
 
 

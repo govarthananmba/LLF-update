@@ -70,7 +70,7 @@
                     fetch(`/delete-teacher/${teacherId}/`, {
                         method: 'POST',
                         headers: {
-                            'X-CSRFToken': getCSRFToken(),
+                            'X-CSRFToken': getCSRFToken(), // Ensure CSRF token is sent
                             'Content-Type': 'application/json'
                         }
                     })
@@ -88,6 +88,7 @@
     function getCSRFToken() {
         return document.querySelector('[name=csrfmiddlewaretoken]').value;
     }
+
 </script>
 
 {% endblock %}

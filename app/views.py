@@ -287,7 +287,7 @@ def edit_teacher(request, teacher_id):
     
     return render(request, 'school_app/edit_teacher.html', {'form': form})
 
-@csrf_exempt
+
 @require_POST
 @login_required
 def update_teacher(request, teacher_id):
@@ -454,33 +454,48 @@ def submit_form(request, student_id, subject):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def assesment_student_list(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
+     
+    school_name = request.user.school_teacher.school_name
+    students = Record.objects.filter(school_name=school_name)
 
-    try:
-        teacher_profile = getattr(request.user, "school_teacher", None)
+    # Get unique grades
+    grades = students.values_list('standard', flat=True).distinct()
 
-        if not teacher_profile or not teacher_profile.school_name:
-            raise School_teacher.DoesNotExist  
+    # Get selected grade from request
+    selected_grade = request.GET.get('grade', '')
 
-        students = Record.objects.filter(school_name=teacher_profile.school_name)
+    if selected_grade:
+        students = students.filter(standard=selected_grade)
 
-        # Fetch submitted status for each student
-        student_status = {}
-        for student in students:
-            submitted_tamil = FormResponse.objects.filter(student=student, subject="Tamil").exists()
-            submitted_maths = FormResponse.objects.filter(student=student, subject="Maths").exists()
-            student_status[student.id] = {
-                "tamil_submitted": submitted_tamil,
-                "maths_submitted": submitted_maths,
-            }
-        student_status = student_status or {} 
-        return render(request, 'Assessments/student_list.html', {
-            'students': students,
-            'student_status': student_status
-        })
+    total_students = students.count()
 
-    except School_teacher.DoesNotExist:
-        contact_email = "admin@gmail.com"
-        message = f"Please contact your admin at {contact_email} to assign a school."
-        return render(request, 'Assessments/student_list.html', {'message': message})
+    # Count submissions for the selected grade
+    literacy_submitted = FormResponse.objects.filter(student__in=students, subject='Tamil').count()
+    literacy_not_submitted = total_students - literacy_submitted
+    numeracy_submitted = FormResponse.objects.filter(student__in=students, subject='Maths').count()
+    numeracy_not_submitted = total_students - numeracy_submitted
+
+    # Student-wise submission status
+    student_status = {}
+    for student in students:
+        tamil_submitted = FormResponse.objects.filter(student=student, subject='Tamil').exists()
+        maths_submitted = FormResponse.objects.filter(student=student, subject='Maths').exists()
+        student_status[student.id] = {
+            'tamil_submitted': tamil_submitted,
+            'maths_submitted': maths_submitted
+        }
+
+    context = {
+        'students': students,
+        'grades': grades,
+        'selected_grade': selected_grade,
+        'total_students': total_students,
+        'literacy_submitted': literacy_submitted,
+        'literacy_not_submitted': literacy_not_submitted,
+        'numeracy_submitted': numeracy_submitted,
+        'numeracy_not_submitted': numeracy_not_submitted,
+        'status': student_status,
+    }
+
+    return render(request, 'Assessments/student_list.html', context)
+    
